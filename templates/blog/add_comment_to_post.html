@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block head %}
+        <title>Vacation in Greece</title>
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <script src="https://www.google.com/recaptcha/api.js?render={{reCAPTCHA_site_key}}"></script>
+<script>
+   grecaptcha.ready(function() {
+      grecaptcha.execute('{{reCAPTCHA_site_key}}', {action: "/add_comment_to_post/"}).then(function(token) {
+        document.getElementById('g-recaptcha-response').value = token;
+      });
+  });
+  
+ </script>
+        
+    {% endblock %}
+{% block content %}
+   
+<div class="container-fluid">
+   
+<!--- Jumbotron -->
+    <div class="jumbotron row d-flex  justify-content-center text-center ">
+        <div class="col-sm-12 col-md-10 col-lg-3 runner">
+     
+            {% include 'blog/blog_side_bar.html' %}
+                
+        </div><!-- col-md-3 col-lg-4 disapear_sm runner -->
+    
+        <div class="col-sm-12 col-md-8 col-lg-4 post_main">
+                <div class="col-12 blog_name">
+                    <h3>הוספת תגובה</h3>
+                </div>
+            <div class="col-12">
+                <h1><a href="{% url 'blog:post_new' %}" class="top-menu"><i class="fas fa-edit"></i>תגובה חדשה</a></h1>
+            </div>
+            <form method="POST" class="post-form">{% csrf_token %}
+                    
+                {{ form.as_p }}
+                
+                <input type="hidden" name="g-recaptcha-response" id='g-recaptcha-response'>
+                <button type="submit" class="btn btn-runner">שלח</button>
+            </form>
+        
+            </div> <!-- "row "  -->     
+          </div>  <!-- col-sm-12 col-md-12 col-lg-8 -->             
+          
+<!--- Close previous div -->
+        </div><!-- jumbotron row  text-center .d-none .d-sm-block -->
+    </div><!-- container-fluid -->
+<!--- Welcome Section -->
+
+{% endblock %}
+

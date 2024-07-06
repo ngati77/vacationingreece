@@ -1,0 +1,244 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load blog_extras %}
+
+{% block facebook_event %}
+        fbq('track', 'ViewContent');
+{% endblock %}
+
+{% block content %}
+          
+<div class="container-fluid">
+   
+<!--- Jumbotron -->
+    <div class="jumbotron row d-flex ">
+        <div class="col-sm-12 col-md-3 col-lg-3 runner order-1 order-lg-0">
+     
+                {% include 'blog/blog_side_bar.html'  %}
+            
+        </div><!-- col-md-3 col-lg-4 disapear_sm runner -->
+    
+        
+        <div class="col-sm-12 col-md-8 col-lg-8 post_main order-0 order-lg-1">
+        
+            <div class="row main_text">
+                <div class="col-sm-12 col-md-12 col-lg-8">
+                      {% if user.is_authenticated %}
+                    <!--
+                        
+                        <div class="col-12">
+                        -->
+                        <a class="btn btn-default" href="{% url 'blog:post_edit' pk=post.pk %}"><i class="fas fa-edit"></i></a>
+
+                        <!--
+                        <a class="btn btn-default" href="{% url 'blog:post_remove' pk=post.pk %}"><i class="fas fa-trash"></i></a>
+                        </div>
+                    -->
+                    {% endif %}
+                    <div class="blog_name">
+                        <h2>{{ post.title }}</h2>
+                        <hr>
+                    </div>
+                    <!--
+                        <div class="col-12">
+                        -->
+                        {% if post.published_date %}
+                        <div class="mb-2"><i><b>{{ post.published_date|date:"d.m.Y" }}</b></i></div>
+                        <!--
+                       
+                        <a class="btn btn-default" href="{% url 'blog:post_publish' pk=post.pk %}">Publish</a>
+                         -->
+                        {% endif %}
+                        <!--
+                        </div>
+                    -->
+                    <!--
+                        <div class="col-8"><p>
+                        -->
+                        
+                        <a class="phrase_img" href="#" data-image-id="" data-toggle="modal" data-title=""
+                        data-image="{{post.image.url}}"
+                        data-target="#image-post">
+                        <img class="img-thumbnail"
+                        src="{{post.image.url}}"
+                        alt="">
+                    </a>
+                    <!--
+                    </div>
+                -->
+                
+                
+                <!--
+                    <div class="col-12">
+                    -->
+                    {{ post.text |blog_url_and_linebreaks }}
+                    <!--
+                    </div>
+                -->
+        
+        
+                </div> <!-- "col-sm-12 col-md-12 col-lg-8"  -->     
+            </div> <!-- "row main_text"  -->     
+            
+            
+                {% for phrase in post.phrases.all %}
+
+                    {% if user.is_authenticated %}
+                        <div class="col-12">
+                        <a class="btn btn-default" href="{% url 'blog:phrase_edit' pk=phrase.pk %}"><i class="fas fa-edit"></i>Edit last Phrase</a>
+                        <!--<a class="btn btn-default" href="{% url 'blog:post_remove' pk=post.pk %}"><i class="fas fa-trash"></i></a>-->
+                        </div>
+                    {% endif %}
+                    {% if phrase.title %}
+                    <div class="col-12 blog_name">
+                        <h3>{{ phrase.title }}</h3>
+                    </div>
+                    {% endif %}
+                
+                    {% if phrase.text1 %}
+                    <div class="col-12">
+
+                        {% if phrase.text1_html_style is True %}
+                            {{ phrase.text1 |safe}}
+                        {% else %}
+                            {{ phrase.text1 |blog_url_and_linebreaks }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                        {% if phrase.image.url is not null %}
+                            {% if phrase.num_images == '1' %}
+                                <div class="col-sm-12 col-md-12 col-lg-8">
+                            {% elif phrase.num_images == '2' %}
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                            {% else %}
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                            {% endif %}
+                        
+
+                            <a class="phrase_img" href="#" data-image-id="" data-toggle="modal" data-title=""
+                            data-image="{{phrase.image.url}}"
+                            data-target="#image-post">
+                            <img class="img-thumbnail"
+                                src="{{phrase.image.url}}"
+                                alt="">
+                            </a>
+                            {% if phrase.image_sub %}
+                                <div class="blog_subtext">
+                                    {{ phrase.image_sub |safe}}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                        {% if phrase.image2.url is not null %}
+                        {% if phrase.num_images == '1' %}
+                        <div class="col-sm-12 col-md-12 col-lg-8">
+                    {% elif phrase.num_images == '2' %}
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                    {% else %}
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                    {% endif %}
+                            <a class="phrase_img" href="#" data-image-id="" data-toggle="modal" data-title=""
+                        data-image="{{phrase.image2.url}}"
+                        data-target="#image-post">
+                        <img class="img-thumbnail"
+                            src="{{phrase.image2.url}}"
+                            alt="">
+                    </a>
+                    {% if phrase.image2_sub %}
+                    <div class="blog_subtext">
+                        {{ phrase.image2_sub }}
+                    </div>
+                {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if phrase.image3.url is not null %}
+                    {% if phrase.num_images == '1' %}
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                {% elif phrase.num_images == '2' %}
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                {% else %}
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                {% endif %}
+                        <a class="phrase_img" href="#" data-image-id="" data-toggle="modal" data-title=""
+                    data-image="{{phrase.image3.url}}"
+                    data-target="#image-post">
+                    <img class="img-thumbnail"
+                        src="{{phrase.image3.url}}"
+                        alt="">
+                    </a>
+                    {% if phrase.image3_sub %}
+                    <div class="blog_subtext">
+                        {{ phrase.image3_sub }}
+                    </div>
+                {% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="pharse_space"></div>
+                    
+                {% endfor %}
+                {% if user.is_authenticated %}
+                
+                <a class="btn btn-default" href="{% url 'blog:phrase_new' pk=post.pk %}"><i class="fas fa-edit"></i>Add new phrase</a>
+                {% endif %}
+                
+            <hr>
+            {% if ShowComments %}
+            <div class="row main_text">
+                <a class="btn btn-runner" href="{% url 'blog:add_comment_to_post' url=post.url %}">Add comment to the Post</a>
+            {% for comment in post.comments.all %}
+                {% if user.is_authenticated or comment.approved_comment %}
+                <div class="col-12">
+                        <strong>{{ comment.author }}</strong>
+                    {% if not comment.approved_comment %}
+                    <a class="btn btn-default" href="{% url 'blog:comment_remove' pk=comment.pk %}"><i class="fas fa-trash"></i></a>
+                    <a class="btn btn-default" href="{% url 'blog:comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a>
+                    {% endif %}
+                    <div class="comment_space">
+
+                        <div class="date">{{ comment.created_date|date:"d.m.Y" }}</div>
+                        {{ comment.text |blog_url_and_linebreaks }}
+                    </div>
+                </div>
+                    {% for subComment in comment.subComments.all %}
+                        {% if user.is_authenticated or subComment.approved_comment %}
+
+                            <div class="col-12 subcomment">
+                                <strong>{{ subComment.author }}</strong>
+                                {% if not subComment.approved_comment %}
+                                    <a class="btn btn-default" href="{% url 'blog:comment_remove' pk=subComment.pk %}"><i class="fas fa-trash"></i></a>
+                                    <a class="btn btn-default" href="{% url 'blog:comment_approve' pk=subComment.pk %}"><i class="fa fa-check"></i></a>
+                                {% endif %}
+                                    <div class="comment_space">
+    
+                                        <div class="date">{{ subComment.created_date|date:"d.m.Y" }}</div>
+                                        {{ subComment.text |blog_url_and_linebreaks }}
+                                    </div>
+                            </div>
+                        {% endif %}
+
+
+                    {% endfor %}
+                    <a class="btn deafult" href="{% url 'blog:add_comment_to_comment' PostUrl=post.url CommentPk=comment.pk %}">Add your comment</a>
+
+                {% endif %}
+    {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>  <!-- col-sm-12 col-md-12 col-lg-8 -->             
+          
+<!--- Our tours row -->
+
+          
+            
+<!--- Close previous div -->
+    </div><!-- jumbotron row  text-center .d-none .d-sm-block -->
+</div><!-- container-fluid -->
+<!--- Welcome Section -->
+
+{% endblock %}

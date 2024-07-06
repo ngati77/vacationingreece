@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he"
+    dir = "rtl">
+<head>
+
+</head>
+<body>
+
+<div class="row" align="right">
+    
+    <p>שלום אהובה,</p>
+    <div class="col-12 success" align="right">
+    {% if comment_to_post %}
+        <p><u>תגובה לפוסט</u></p>
+        <p><u> כותרת פוסט</u></p>
+        <p>{{ comment.post.title }}</p>
+    
+        <p><u> תגובה</u></p>
+        <p>{{ comment.text }}</p>
+        
+        <p><u>כותב</u></p>
+        <p>{{ comment.author }}</p>
+        
+        {% else %}
+        <p>תגובה לתגובה בפוסט</p>
+        <p><u> כותרת פוסט</u></p>
+        <p>{{ comment.commentParent.post.title }}</p>
+        <p><u> תגובה מקורית</u></p>
+        <p>{{ comment.commentParent.text }}</p>
+        <p><u> תגובה</u></p>
+        <p>{{ comment.text }}</p>
+
+         <p><u>כותב</u></p>
+        <p>{{ comment.author }}</p>
+       
+        {% endif %}
+    
+    <hr>
+    
+    <hr>
+
+
+    
+    <p>שלך</p>
+     <p>נועם    </p>
+      
+    </div>
+</div>
+
+</body>
+</html>

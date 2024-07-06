@@ -1,0 +1,46 @@
+{% load static %}
+<!--
+
+    <div class="row">
+        <div class="title2" >
+            בלוגים לפי נושאים
+        </div>
+    </div>
+    <div class="row ">
+        <hr class="light">
+    </div>
+-->
+<!-- 
+    <li class="nav-item "><a class="nav-link" href="">משימות</a></li>
+-->
+    
+<ul class="nav nav_blog flex-column flex-nowrap">
+    <li class="nav-item "><a class="nav-link" href="{% url 'blog:post_list' %}">Latest Posts</a></li>
+    {% if user.is_authenticated %}
+    <li class="nav-item "><a class="nav-link" href="{% url 'blog:post_draft_list' %}">Drafts</a></li>
+    {% endif %}
+    <li class="nav-item "><a class="nav-link" href="{% url 'blog:post_writers' %}">The writers</a></li>
+    {% for post in latest_posts %}
+    <li class="nav-item "><a class="nav-link" href="{% url 'blog:post_detail' url=post.url %}"><img width="20%" src="{{post.image.url}}"/> {{post.title}}</a></li>
+    
+    {% endfor %}
+
+</ul>
+<div class="row ">
+    <hr class="light">
+    <div class="col-sm-12 col-md-12 col-lg-12"> 
+        <div class="blog_name">
+            <h6>Would you like to hear more?
+</h6><h6>
+ Suscribe
+            </h6>
+        </div>
+    </div>
+    <div class="space"></div>
+    <div class="col-sm-12 col-md-12 col-lg-8"> 
+        <form method="POST" action = "{% url 'blog:subscribed_view' %}" >{% csrf_token %}
+        {{ subscribedForm.as_p }}
+        <button type="submit" class="save btn btn-blog">I would love to read more</button>
+        </form>
+    </div>
+</div>

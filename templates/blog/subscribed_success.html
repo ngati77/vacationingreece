@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+fbq('track', 'Lead');
+{% block facebook_event %}
+        fbq('track', 'Lead');
+{% endblock %}
+{% block content %}
+   
+<div class="container-fluid">
+   
+<!--- Jumbotron -->
+    <div class="jumbotron row d-flex  justify-content-center text-center ">
+        <div class="col-sm-12 col-md-10 col-lg-3 runner">
+     
+            {% include 'blog/blog_side_bar.html' %}
+                
+        </div><!-- col-md-3 col-lg-4 disapear_sm runner -->
+        
+        <div class="col-sm-12 col-md-12 col-lg-8 post_main">
+            <div class="col-12 blog_name">
+                <h1><a href="#">{{page_title}}</a></h1>
+            </div>
+            <div class="row ">
+                
+                <div class="col-12">
+                    <p>
+                    Thanks for registers to our subsribers, an email has just been sent to you.
+                    </p>
+                    <p class="lead">
+                        <a class="btn btn-runner" href="{% url  'blog:post_list'  %}" role="button">Back to our home page</a>
+                    </p>        
+                </div>
+            </div> <!-- "row post_column"  --> 
+        </div>  <!-- col-sm-12 col-md-12 col-lg-8 -->             
+          
+<!--- Close previous div -->
+        </div><!-- jumbotron row  text-center .d-none .d-sm-block -->
+    </div><!-- container-fluid -->
+<!--- Welcome Section -->
+
+{% endblock %}

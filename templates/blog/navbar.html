@@ -1,0 +1,29 @@
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+<div class="container-fluid">
+    <h5 class="navbar-text navbar-first-line"><b>Vacation in Greece</b></h5>
+    
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+    data-target="#navbarResponsive">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-cener">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url  'blog:post_list'  %}" >Home</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url  'blog:post_list'  %}" >About Us</a>
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url  'blog:post_list'  %}" >Best Posts</a>
+
+                    </li>
+                    </ul>
+    </div>
+</div>
+
+</nav>
+
