@@ -22,13 +22,9 @@ def group_required(*group_names):
    return user_passes_test(in_groups)
 
 def post_list(request):
-    meta_des_heb = "קיימברידג בעברית בלוג טיולים "
-    meta_des_en  = "Cambridge in Hebrew the blog"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "קיימברידג' בלוג טיולים פוסט"
-    meta_key_en  = "cambridge hebrew blog post"
-    meta_key     = meta_key_heb + meta_key_en
-    title        = 'האחרונים שלנו'
+    meta_des  = "Vacation In Greece blog"
+    meta_key = "Vacation in greece"
+    title        = 'Latest Posts'
     posts = Post.objects.filter(published_date__lte=timezone.now(),type='p').order_by('-published_date')
     return render(request, 'blog/post_list.html', {'posts': [posts[0::2], posts[1::2]],
                                                     'page_title':   title,
@@ -39,12 +35,8 @@ def post_list(request):
 
 def post_detail(request, url):
     post = get_object_or_404(Post, url=url)
-    meta_des_heb = f"קיימברידג בעברית {post.title} "
-    meta_des_en  = "Cambridge in Hebrew post details"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = f"קיימברידג' בלוג טיולים פוסט {post.title}"
-    meta_key_en  = "cambridge hebrew post details"
-    meta_key     = meta_key_heb + meta_key_en
+    meta_des  = f"Vacation in Greece post {post.title}"
+    meta_key  = meta_des
     title        = post.title
     return render(request, 'blog/post_detail.html', {'post': post, 
                                                     'page_title':   title,
@@ -130,14 +122,14 @@ def send_email_thank_you(subscribed):
     ''' New subscribed, sends email
     '''
     post = Post.objects.filter(published_date__lte=timezone.now(),type='p').order_by('-published_date')[0]
-    title   = "תודה שנרשמתם"
-    msg_plain =  "בלוג חדש"
+    title   = "Thanks for suscribed "
+    msg_plain =  "New Post "
 
     
     to=[subscribed.email]
     msg_html = render_to_string('emails/new_post.html',{'post':post, 'subscribed':subscribed })
     #print(msg_html)
-    #emailTitle = " בדוק בלוג "
+    #emailTitle = "   "
     #tour_emails.send_email(to=to,
     #                    msg_html=msg_html, 
     #                    msg_plain=msg_plain, 
@@ -150,13 +142,13 @@ def send_new_publish_post(post):
     '''
     subList = Subscribed.objects.filter(confirmed=True)
     title   = post.title
-    msg_plain =  "בלוג חדש"
+    msg_plain =  " New Post"
 
     for subscribed in subList:
         to=[subscribed.email]
         msg_html = render_to_string('emails/new_post.html',{'post':post, 'subscribed':subscribed })
         #print(msg_html)
-    #emailTitle = " בדוק בלוג "
+    #emailTitle = "New Post "
         #tour_emails.send_email(to=to,
         #                    msg_html=msg_html, 
         #                    msg_plain=msg_plain, 
@@ -180,13 +172,9 @@ def post_remove(request, pk):
 
 def post_writers(request):
     posts = Post.objects.filter(published_date__isnull=False,type='w').order_by('created_date')
-    meta_des_heb = " על הכותבים"
-    meta_des_en  = "Cambridge in Hebrew pthe writers"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "קיימברידג' על הכותבים   "
-    meta_key_en  = "writers"
-    meta_key     = meta_key_heb + meta_key_en
-    title        = 'על הכותבים'
+    meta_des  = "Vacation In Greece the writers"
+    meta_key  = "writers"
+    title        = 'About Us'
     return render(request, 'blog/post_detail.html', {'post': posts[0],
                                                     'page_title':title,
                                                     'meta_des':  meta_des,
@@ -201,9 +189,9 @@ def inform_admin(comment_to_post, comment):
     to=[settings.EMAIL_GMAIL_YAEL]
     
     msg_html = render_to_string('emails/email_admin.html',{'comment_to_post':comment_to_post,'comment':comment})
-    msg_plain =  "בדוק בלוג"
-    title     = 'תגובה חדשה'
-    #emailTitle = " בדוק בלוג "
+    msg_plain =  "Check Blog"
+    title     = 'New Comment'
+    #emailTitle = " New Comment  "
     #tour_emails.send_email(to=to,
     #                        msg_html=msg_html, 
     #                        msg_plain=msg_plain, 
@@ -217,23 +205,23 @@ def send_email(task, obj):
         to.append(obj.email)
     if task == 'Check':
         msg_html = ""
-        msg_plain =  "בדוק בלוג"
-        emailTitle = " בדוק בלוג "
+        msg_plain =  "New Comment"
+        emailTitle = " New Comment  "
         to=settings.BCC_EMAIL
     if task=='New comment':
         msg_html = render_to_string('emails/email_new_comment.html', {'comment':obj})
-        msg_plain = str(obj.id) + " הערה חדשה"
-        emailTitle = "תודה שכתבת לנו"
+        msg_plain = str(obj.id) + " New Comment "
+        emailTitle = "Thanks for writing us  "
     elif task = 'New Subscribed':
         msg_html = render_to_string('emails/email_new_subscribed.html', {'comment':obj})
-        msg_plain = str(obj.id) + " משתמש חדש "
-        emailTitle = "תודה שנרשמת"
+        msg_plain = str(obj.id) + "  New user "
+        emailTitle = "Thanks for your registration"
     elif task = 'Published comment':
         # A new comment has been published, inform the person who wrote it
         if (obj.post):
             msg_html = render_to_string('emails/email_comment_published.html', {'comment':obj})
-            msg_plain = str(obj.id) + "תגובה פורסמה "
-            emailTitle = "התגובה שלך פורסמה"
+            msg_plain =  f"Comment published: {str(obj.id)}"
+            emailTitle = " Your comment is now in the website "
 
 
         
@@ -252,13 +240,9 @@ except:
 @check_recaptcha
 def add_comment_to_post(request, url):
     post = get_object_or_404(Post, url=url)
-    meta_des_heb = "הוסף הערה"
-    meta_des_en  = "Cambridge in Hebrew add comment"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "קיימברידג' הוסף תגובה"
-    meta_key_en  = "add comment"
-    meta_key     = meta_key_heb + meta_key_en
-    title        = 'הוספת תגובה'
+    meta_des  = "Vacation in Greece add comment"
+    meta_key  = meta_des
+    title        = 'Add comment'
     if request.method == "POST":
 
         form = CommentForm(request.POST)
@@ -282,13 +266,9 @@ def add_comment_to_post(request, url):
 @check_recaptcha
 def add_comment_to_comment(request, PostUrl, CommentPk):
     commentParent = get_object_or_404(Comment, pk=CommentPk)
-    title        = 'הוספת תגובה'
-    meta_des_heb = "הוסף הערה"
-    meta_des_en  = "Cambridge in Hebrew add comment"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "קיימברידג' הוסף תגובה"
-    meta_key_en  = "add comment"
-    meta_key     = meta_key_heb + meta_key_en
+    title        = ' Add comment'
+    meta_des  = "Vacation in Greece add comment"
+    meta_key  = "add comment"
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid() and request.recaptcha_is_valid:
@@ -310,13 +290,9 @@ def add_comment_to_comment(request, PostUrl, CommentPk):
                                                               })
  
 def subscribed_success(request):
-    meta_des_heb = "הרישום לרשימת התפוצה הצליח"
-    meta_des_en  = "Suscribed successfuky"
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "הרישום הצליח"
-    meta_key_en  = "suscribe"
-    meta_key     = meta_key_heb + meta_key_en
-    title = "הרישום הצליח"
+    meta_des = "Registeration to our distribution list has successed"
+    meta_key = "Registration successed "
+    title = meta_key 
     
     return render(request, 'blog/subscribed_success.html',{'page_title':title,
                                                              'meta_des':  meta_des,
@@ -327,13 +303,9 @@ def subscribed_success(request):
 
 
 def subscribed_view(request):
-    meta_des_heb = "רישום לקבלת מיילים כשיוצא"
-    meta_des_en  = "suscribed "
-    meta_des = meta_des_heb + meta_des_en
-    meta_key_heb = "רישום למייל"
-    meta_key_en  = "add suscribed"
-    meta_key     = meta_key_heb + meta_key_en
-    title = "שלח מייל כשיוצא פוסט חדש"
+    meta_des  = "suscribed "
+    meta_key  = "add suscribed"
+    title = "Send me email when new post is published"
     if request.method == "POST":
         form = SubscribedForm(request.POST)
         if form.is_valid():
