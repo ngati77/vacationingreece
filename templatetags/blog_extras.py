@@ -20,7 +20,7 @@ def BlogCreateLink(text): # Only one argument.
     """Converts a string contains [[<url link>,<text>]] to hyperlink"""
     # The pattern search for [[ and ]] in between it seperate according to <,> into two groups,
     # The first part is the link while the second is text to display
-    pattern = '\[\[(.*?),(.*?)\]\]'
+    pattern = '\[\[(.*?),,,(.*?)\]\]'
     replacement = r'<a target=”_blank” href=\1>\2</a>'
     result = re.sub(pattern, replacement, text)
     return result
